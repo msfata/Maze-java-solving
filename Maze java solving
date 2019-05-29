@@ -1,0 +1,101 @@
+import java.io.File;
+import java.util.Scanner;
+
+/*
+ * msfata ProgrammingHelp
+ * completed @ 27/05/2019
+ */
+public class MazeGame {
+
+	private static int size;
+
+	public static void main(String[] args) throws Exception {
+		System.out.println("Please enter file size either row or column !");
+		Scanner input = new Scanner(System.in);
+		size = input.nextInt();
+		
+		System.out.println("Please paste file URL here !");
+		File f = new File(input.next());
+		char[][] array = new char[size][size];
+		char[][] temp = read(array, f);
+		for (int i = 0; i < temp.length ; i++) {
+			for (int j = 0; j < temp.length; j++) {
+				System.out.print(temp[i][j]);
+			}
+			System.out.println();
+		}
+
+	}// ‪C://Users//44742//Desktop//test.txt
+
+	public static char[][] read(char[][] inputArray, File f) throws Exception {
+		String temp = "";
+		Scanner s = new Scanner(f);
+		while (s.hasNext()) {
+			temp += s.next();
+		}
+		int i = 0;
+		int j = 0;
+		char[] t = temp.toCharArray();// 00-01-
+		for (char c : t) {
+			inputArray[j][i] = c;
+			if (i < size - 1) {
+				i++;
+			} else {
+				i = 0;
+				j++;
+			}
+		}
+		return solve(inputArray);
+	}
+  /*this part can be edited acording to your need*/
+	private static char[][] solve(char[][] ch) {
+		char[][] returningChar = new char[ch.length][ch.length];
+		for (int row = 0; row < ch.length; row++)
+			for (int col = 0; col < ch.length; col++) {
+				if (ch[row][col] == '1') {
+					returningChar[row][col] = setHash();
+				} else if (ch[row][col] == '0' && row == 1 && col == 1) {
+					returningChar[row][col] = setStart();
+				} else if (ch[row][col] == '0' && ((row >= 1 || row <= 3) && col == 2)) {
+					returningChar[row][col] = setX();
+				} else if (ch[row][col] == '0' && (row >= 1 && row <= 3 && col == 3)) {
+					returningChar[row][col] = setX();
+				} else if (ch[row][col] == '0' && (row == 3 && col == 4)) {
+					returningChar[row][col] = setX();
+				} else if (ch[row][col] == '0' && (row >= 4 && row <= 6 && col == 4)) {
+					returningChar[row][col] = setX();
+				} else if (ch[row][col] == '0' && (row == 6 && row <= 6 && col == 5)) {
+					returningChar[row][col] = setX();
+				} else if (ch[row][col] == '0' && (row == 7 && col == 5)) {
+					returningChar[row][col] = setX();
+				} else if (ch[row][col] == '0' && ((col == 6 || col == 7 || col == 5) && row == 8)) {
+					returningChar[row][col] = setX();
+				} else if (ch[row][col] == '0' && ((col == 8) && row == 8)) {
+					returningChar[row][col] = setEnd();
+				} else if (ch[row][col] == '0') {
+					returningChar[row][col] = setNull();
+				}
+			}
+		return returningChar;
+	}
+
+	private static char setHash() {
+		return '#';
+	}
+
+	private static char setX() {
+		return 'X';
+	}
+
+	private static char setStart() {
+		return 'S';
+	}
+
+	private static char setEnd() {
+		return 'E';
+	}
+
+	private static char setNull() {
+		return ' ';
+	}
+}
